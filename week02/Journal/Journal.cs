@@ -38,7 +38,6 @@ public class Journal
         {
             foreach (Entry entry in _entries)
             {
-                // Save date, prompt, response, and rating separated by '|'
                 string line = $"{entry.GetDate()}|{entry.GetPrompt()}|{entry.GetResponse()}|{entry.GetRating()}";
                 writer.WriteLine(line);
             }
