@@ -1,4 +1,5 @@
-
+//Added a Rating enry for the user to rate their day
+//on a scale of 1-5
 using System;
 using System.Collections.Generic;
 

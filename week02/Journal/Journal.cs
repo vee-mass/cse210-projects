@@ -1,17 +1,10 @@
-
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 
 public class Journal
 {
-    private List<Entry> _entries;
-
-    public Journal()
-    {
-        _entries = new List<Entry>();
-    }
+    private List<Entry> _entries = new List<Entry>();
 
     public void AddEntry(Entry entry)
     {
@@ -22,13 +15,13 @@ public class Journal
     {
         if (_entries.Count == 0)
         {
-            Console.WriteLine("No journal entries yet.");
+            Console.WriteLine("No entries to display.");
             return;
         }
 
         foreach (Entry entry in _entries)
         {
-            entry.Display();
+            Console.WriteLine(entry.ToString());
         }
     }
 
@@ -38,8 +31,7 @@ public class Journal
         {
             foreach (Entry entry in _entries)
             {
-                string line = $"{entry.GetDate()}|{entry.GetPrompt()}|{entry.GetResponse()}|{entry.GetRating()}";
-                writer.WriteLine(line);
+                writer.WriteLine(entry.ToFileString());
             }
         }
     }
@@ -57,23 +49,14 @@ public class Journal
         string[] lines = File.ReadAllLines(filename);
         foreach (string line in lines)
         {
-            string[] parts = line.Split('|');
-            if (parts.Length == 4)
+            try
             {
-                string date = parts[0];
-                string prompt = parts[1];
-                string response = parts[2];
-                int rating;
-                if (!int.TryParse(parts[3], out rating))
-                {
-                    rating = 0; // Default rating if parsing fails
-                }
-                Entry entry = new Entry(prompt, response, date, rating);
+                Entry entry = Entry.FromFileString(line);
                 _entries.Add(entry);
             }
-            else
+            catch (Exception e)
             {
-                Console.WriteLine("Warning: Skipping malformed line in file.");
+                Console.WriteLine($"Error reading entry: {e.Message}");
             }
         }
     }
