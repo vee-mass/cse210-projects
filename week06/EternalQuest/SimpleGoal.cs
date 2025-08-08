@@ -12,6 +12,6 @@ public class SimpleGoal : Goal
             MarkComplete();
             return GetPoints();
         }
-        return 0; // already complete
+        return 0;
     }
 }
